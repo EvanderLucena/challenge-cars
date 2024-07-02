@@ -1,5 +1,7 @@
 package br.com.lucena.challengecars.controller;
 
+import br.com.lucena.challengecars.dto.ModeloDTO;
+import br.com.lucena.challengecars.dto.ModeloRequestDTO;
 import br.com.lucena.challengecars.entity.Modelo;
 import br.com.lucena.challengecars.service.ModeloService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,26 +12,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/modelos")
 public class ModeloController {
+
     @Autowired
     private ModeloService modeloService;
 
     @GetMapping
-    public List<Modelo> getAllModelos() {
+    public List<ModeloDTO> getAllModelos() {
         return modeloService.getAllModelos();
     }
 
     @GetMapping("/{id}")
-    public Modelo getModeloById(@PathVariable Long id) {
+    public ModeloDTO getModeloById(@PathVariable Long id) {
         return modeloService.getModeloById(id);
     }
 
     @PostMapping
-    public Modelo createModelo(@RequestBody Modelo modelo) {
+    public ModeloDTO createModelo(@RequestBody ModeloRequestDTO modelo) {
         return modeloService.createModelo(modelo);
     }
 
     @PutMapping("/{id}")
-    public Modelo updateModelo(@PathVariable Long id, @RequestBody Modelo modeloDetails) {
+    public ModeloDTO updateModelo(@PathVariable Long id, @RequestBody ModeloRequestDTO modeloDetails) {
         return modeloService.updateModelo(id, modeloDetails);
     }
 

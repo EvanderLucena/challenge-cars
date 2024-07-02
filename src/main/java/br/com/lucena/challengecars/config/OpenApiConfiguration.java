@@ -1,7 +1,8 @@
 package br.com.lucena.challengecars.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.GroupedOpenApi;
+
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,10 +12,9 @@ public class OpenApiConfiguration {
 
     @Bean
     public GroupedOpenApi publicApi() {
-        logger.info("Configurando Springdoc OpenAPI...");
         return GroupedOpenApi.builder()
                 .group("public")
-                .packagesToScan("br.com.lucena.challengecars.controller") // Ajuste para o pacote correto onde seus controladores estão
+                .packagesToScan("br.com.lucena.challengecars.controller")
                 .build();
     }
 }
