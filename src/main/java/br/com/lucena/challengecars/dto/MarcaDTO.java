@@ -33,9 +33,11 @@ public class MarcaDTO {
         this.nomeMarca = nomeMarca;
     }
 
-    // Método de conversão de entidade para DTO
     public static MarcaDTO fromMarca(Marca marca) {
-        return new MarcaDTO(marca.getId(), marca.getNomeMarca());
+        MarcaDTO dto = new MarcaDTO();
+        dto.setId(marca.getId());
+        dto.setNomeMarca(marca.getNomeMarca());
+        return dto;
     }
 
     // toString para facilitar o debug e log
