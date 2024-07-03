@@ -1,64 +1,71 @@
 package br.com.lucena.challengecars.service;
 
 import br.com.lucena.challengecars.dto.CarroDTO;
+import br.com.lucena.challengecars.dto.CarroRequestUpdateDTO;
 import br.com.lucena.challengecars.entity.Carro;
 import br.com.lucena.challengecars.repository.CarroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import br.com.lucena.challengecars.dto.CarroRequestCreateDTO;
+import br.com.lucena.challengecars.entity.Modelo;
+import br.com.lucena.challengecars.repository.ModeloRepository;
 
 @Service
 public class CarroService {
 
     @Autowired
     private CarroRepository carroRepository;
+    @Autowired
+    private ModeloRepository modeloRepository;
 
-    public List<Carro> getAllCarros() {
-        return carroRepository.findAll();
+    public List<CarroDTO> getAllCarros() {
+        return carroRepository.findAll().stream()
+                .map(CarroDTO::fromCarro)
+                .collect(Collectors.toList());
     }
 
-    public Carro getCarroById(Long id) {
-        return carroRepository.findById(id).orElse(null);
+    public CarroDTO getCarroById(Long id) {
+        Carro carro = carroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Carro não encontrado com ID: " + id));
+        return CarroDTO.fromCarro(carro);
     }
 
-    public Carro createCarro(Carro carro) {
-        return carroRepository.save(carro);
+    public CarroDTO createCarro(CarroRequestCreateDTO carroRequestDTO) {
+        Carro carro = new Carro();
+        Modelo modelo = modeloRepository.findById(carroRequestDTO.getModeloId())
+                .orElseThrow(() -> new RuntimeException("Modelo não encontrado com ID: " + carroRequestDTO.getModeloId()));
+        carro.setModelo(modelo);
+        carro.setTimestampCadastro(Timestamp.from(Instant.now()));
+        carro.setAno(carroRequestDTO.getAno());
+        carro.setCombustivel(carroRequestDTO.getCombustivel());
+        carro.setNumPortas(carroRequestDTO.getNumPortas());
+        carro.setCor(carroRequestDTO.getCor());
+        carro = carroRepository.save(carro);
+        return CarroDTO.fromCarro(carro);
     }
 
-    public Carro updateCarro(Long id, Carro carroDetails) {
-        Carro carro = carroRepository.findById(id).orElse(null);
-        if (carro != null) {
-            carro.setTimestampCadastro(carroDetails.getTimestampCadastro());
-            carro.setAno(carroDetails.getAno());
-            carro.setCombustivel(carroDetails.getCombustivel());
-            carro.setNumPortas(carroDetails.getNumPortas());
-            carro.setCor(carroDetails.getCor());
-            carro.setModelo(carroDetails.getModelo());
-            return carroRepository.save(carro);
-        }
-        return null;
+    public CarroDTO updateCarro(CarroRequestUpdateDTO carroRequestDTO) {
+        Carro carro = carroRepository.findById(carroRequestDTO.getCarroId())
+                .orElseThrow(() -> new RuntimeException("Carro não encontrado com ID: " + carroRequestDTO.getCarroId()));
+        carro.setAno(carroRequestDTO.getAno());
+        carro.setTimestampCadastro(Timestamp.from(Instant.now()));
+        carro.setCombustivel(carroRequestDTO.getCombustivel());
+        carro.setNumPortas(carroRequestDTO.getNumPortas());
+        carro.setCor(carroRequestDTO.getCor());
+        Modelo modelo = modeloRepository.findById(carroRequestDTO.getModeloId())
+                .orElseThrow(() -> new RuntimeException("Modelo não encontrado com ID: " + carroRequestDTO.getModeloId()));
+        carro.setModelo(modelo);
+        carro = carroRepository.save(carro);
+        return CarroDTO.fromCarro(carro);
     }
 
     public void deleteCarro(Long id) {
         carroRepository.deleteById(id);
-    }
-
-    public List<CarroDTO> getAllCarrosWithModelInfo() {
-        List<Carro> carros = carroRepository.findAll();
-        return carros.stream().map(carro -> {
-            CarroDTO dto = new CarroDTO();
-            dto.setId(carro.getId());
-            dto.setTimestampCadastro(carro.getTimestampCadastro().getTime());
-            dto.setModeloId(carro.getModelo().getId());
-            dto.setAno(carro.getAno());
-            dto.setCombustivel(carro.getCombustivel());
-            dto.setNumPortas(carro.getNumPortas());
-            dto.setCor(carro.getCor());
-            dto.setNomeModelo(carro.getModelo().getNome());
-            dto.setValor(carro.getModelo().getValorFipe());
-            return dto;
-        }).collect(Collectors.toList());
     }
 }

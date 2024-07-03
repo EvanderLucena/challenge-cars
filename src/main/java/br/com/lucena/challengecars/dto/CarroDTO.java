@@ -1,5 +1,7 @@
 package br.com.lucena.challengecars.dto;
 
+import br.com.lucena.challengecars.entity.Carro;
+
 public class CarroDTO {
     private Long id;
     private Long timestampCadastro;
@@ -82,5 +84,19 @@ public class CarroDTO {
 
     public void setValor(Double valor) {
         this.valor = valor;
+    }
+
+    public static CarroDTO fromCarro(Carro carro) {
+        CarroDTO dto = new CarroDTO();
+        dto.setId(carro.getId());
+        dto.setTimestampCadastro(carro.getTimestampCadastro().getTime()); // Assumindo que timestampCadastro é um Date
+        dto.setModeloId(carro.getModelo().getId());
+        dto.setAno(carro.getAno());
+        dto.setCombustivel(carro.getCombustivel());
+        dto.setNumPortas(carro.getNumPortas());
+        dto.setCor(carro.getCor());
+        dto.setNomeModelo(carro.getModelo().getNome());
+        dto.setValor(carro.getModelo().getValorFipe());
+        return dto;
     }
 }

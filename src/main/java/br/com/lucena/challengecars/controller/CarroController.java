@@ -1,14 +1,13 @@
 package br.com.lucena.challengecars.controller;
 
 import br.com.lucena.challengecars.dto.CarroDTO;
-import br.com.lucena.challengecars.entity.Carro;
+import br.com.lucena.challengecars.dto.CarroRequestCreateDTO;
+import br.com.lucena.challengecars.dto.CarroRequestUpdateDTO;
 import br.com.lucena.challengecars.service.CarroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/carros")
@@ -18,23 +17,23 @@ public class CarroController {
     private CarroService carroService;
 
     @GetMapping
-    public List<Carro> getAllCarros() {
+    public List<CarroDTO> getAllCarros() {
         return carroService.getAllCarros();
     }
 
     @GetMapping("/{id}")
-    public Carro getCarroById(@PathVariable Long id) {
+    public CarroDTO getCarroById(@PathVariable Long id) {
         return carroService.getCarroById(id);
     }
 
     @PostMapping
-    public Carro createCarro(@RequestBody Carro carro) {
+    public CarroDTO createCarro(@RequestBody CarroRequestCreateDTO carro) {
         return carroService.createCarro(carro);
     }
 
     @PutMapping("/{id}")
-    public Carro updateCarro(@PathVariable Long id, @RequestBody Carro carroDetails) {
-        return carroService.updateCarro(id, carroDetails);
+    public CarroDTO updateCarro(@RequestBody CarroRequestUpdateDTO carroDetails) {
+        return carroService.updateCarro(carroDetails);
     }
 
     @DeleteMapping("/{id}")
@@ -42,11 +41,4 @@ public class CarroController {
         carroService.deleteCarro(id);
     }
 
-    @GetMapping("/listagem")
-    public Map<String, List<CarroDTO>> getAllCarrosWithModelInfo() {
-        List<CarroDTO> carros = carroService.getAllCarrosWithModelInfo();
-        Map<String, List<CarroDTO>> response = new HashMap<>();
-        response.put("cars", carros);
-        return response;
-    }
 }
