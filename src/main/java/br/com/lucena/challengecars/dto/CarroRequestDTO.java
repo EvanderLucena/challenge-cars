@@ -1,19 +1,13 @@
 package br.com.lucena.challengecars.dto;
 
-public abstract class CarroAbstractRequestDTO {
-
+public class CarroRequestDTO {
     private Long modeloId;
     private int ano;
     private String combustivel;
     private int numPortas;
     private String cor;
 
-    public CarroAbstractRequestDTO(Long modeloId, int ano, String combustivel, int numPortas, String cor) {
-        this.modeloId = modeloId;
-        this.ano = ano;
-        this.combustivel = combustivel;
-        this.numPortas = numPortas;
-        this.cor = cor;
+    public CarroRequestDTO() {
     }
 
     public Long getModeloId() {

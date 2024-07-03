@@ -1,8 +1,10 @@
 package br.com.lucena.challengecars.controller;
 
 import br.com.lucena.challengecars.dto.MarcaDTO;
+import br.com.lucena.challengecars.dto.MarcaRquestDTO;
 import br.com.lucena.challengecars.entity.Marca;
 import br.com.lucena.challengecars.service.MarcaService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +28,12 @@ public class MarcaController {
     }
 
     @PostMapping
-    public MarcaDTO createMarca(@RequestBody MarcaDTO marca) {
+    public MarcaDTO createMarca(@RequestBody MarcaRquestDTO marca) {
         return marcaService.createMarca(marca);
     }
 
     @PutMapping("/{id}")
-    public MarcaDTO updateMarca(@PathVariable Long id, @RequestBody MarcaDTO marcaDetails) {
+    public MarcaDTO updateMarca(@PathVariable @NotNull Long id, @RequestBody MarcaRquestDTO marcaDetails) {
         return marcaService.updateMarca(id, marcaDetails);
     }
 

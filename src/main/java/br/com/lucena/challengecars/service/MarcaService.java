@@ -1,5 +1,6 @@
 package br.com.lucena.challengecars.service;
 
+import br.com.lucena.challengecars.dto.MarcaRquestDTO;
 import br.com.lucena.challengecars.entity.Marca;
 import br.com.lucena.challengecars.repository.MarcaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +40,14 @@ public class MarcaService {
     }
 
     @Transactional
-    public MarcaDTO createMarca(MarcaDTO marcaDTO) {
+    public MarcaDTO createMarca(MarcaRquestDTO marcaDTO) {
         Marca marca = new Marca();
         marca.setNomeMarca(marcaDTO.getNomeMarca());
         return MarcaDTO.fromMarca(marcaRepository.save(marca));
     }
 
     @Transactional
-    public MarcaDTO updateMarca(Long id, MarcaDTO marcaDTO) {
+    public MarcaDTO updateMarca(Long id, MarcaRquestDTO marcaDTO) {
         Marca marca = marcaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Marca não encontrada com ID: " + id));
         marca.setNomeMarca(marcaDTO.getNomeMarca());

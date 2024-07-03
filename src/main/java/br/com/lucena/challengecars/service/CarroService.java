@@ -1,7 +1,7 @@
 package br.com.lucena.challengecars.service;
 
 import br.com.lucena.challengecars.dto.CarroDTO;
-import br.com.lucena.challengecars.dto.CarroRequestUpdateDTO;
+import br.com.lucena.challengecars.dto.CarroRequestDTO;
 import br.com.lucena.challengecars.entity.Carro;
 import br.com.lucena.challengecars.repository.CarroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.lucena.challengecars.dto.CarroRequestCreateDTO;
 import br.com.lucena.challengecars.entity.Modelo;
 import br.com.lucena.challengecars.repository.ModeloRepository;
 
@@ -36,7 +35,7 @@ public class CarroService {
         return CarroDTO.fromCarro(carro);
     }
 
-    public CarroDTO createCarro(CarroRequestCreateDTO carroRequestDTO) {
+    public CarroDTO createCarro(CarroRequestDTO carroRequestDTO) {
         Carro carro = new Carro();
         Modelo modelo = modeloRepository.findById(carroRequestDTO.getModeloId())
                 .orElseThrow(() -> new RuntimeException("Modelo não encontrado com ID: " + carroRequestDTO.getModeloId()));
@@ -50,9 +49,9 @@ public class CarroService {
         return CarroDTO.fromCarro(carro);
     }
 
-    public CarroDTO updateCarro(CarroRequestUpdateDTO carroRequestDTO) {
-        Carro carro = carroRepository.findById(carroRequestDTO.getCarroId())
-                .orElseThrow(() -> new RuntimeException("Carro não encontrado com ID: " + carroRequestDTO.getCarroId()));
+    public CarroDTO updateCarro(Long id, CarroRequestDTO carroRequestDTO) {
+        Carro carro = carroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Carro não encontrado com ID: " + id));
         carro.setAno(carroRequestDTO.getAno());
         carro.setTimestampCadastro(Timestamp.from(Instant.now()));
         carro.setCombustivel(carroRequestDTO.getCombustivel());

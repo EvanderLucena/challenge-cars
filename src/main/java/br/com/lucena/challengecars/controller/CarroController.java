@@ -1,8 +1,7 @@
 package br.com.lucena.challengecars.controller;
 
 import br.com.lucena.challengecars.dto.CarroDTO;
-import br.com.lucena.challengecars.dto.CarroRequestCreateDTO;
-import br.com.lucena.challengecars.dto.CarroRequestUpdateDTO;
+import br.com.lucena.challengecars.dto.CarroRequestDTO;
 import br.com.lucena.challengecars.service.CarroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +26,13 @@ public class CarroController {
     }
 
     @PostMapping
-    public CarroDTO createCarro(@RequestBody CarroRequestCreateDTO carro) {
+    public CarroDTO createCarro(@RequestBody CarroRequestDTO carro) {
         return carroService.createCarro(carro);
     }
 
     @PutMapping("/{id}")
-    public CarroDTO updateCarro(@RequestBody CarroRequestUpdateDTO carroDetails) {
-        return carroService.updateCarro(carroDetails);
+    public CarroDTO updateCarro(@PathVariable Long id, @RequestBody CarroRequestDTO carroDetails) {
+        return carroService.updateCarro(id, carroDetails);
     }
 
     @DeleteMapping("/{id}")
