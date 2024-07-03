@@ -33,7 +33,7 @@ public class MarcaController {
     }
 
     @PutMapping("/{id}")
-    public MarcaDTO updateMarca(@PathVariable @NotNull Long id, @RequestBody MarcaRquestDTO marcaDetails) {
+    public MarcaDTO updateMarca(@PathVariable Long id, @RequestBody MarcaRquestDTO marcaDetails) {
         return marcaService.updateMarca(id, marcaDetails);
     }
 

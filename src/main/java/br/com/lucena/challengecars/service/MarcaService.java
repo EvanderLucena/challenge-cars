@@ -51,7 +51,8 @@ public class MarcaService {
         Marca marca = marcaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Marca não encontrada com ID: " + id));
         marca.setNomeMarca(marcaDTO.getNomeMarca());
-        return MarcaDTO.fromMarca(marcaRepository.save(marca));
+        Marca marcaSaved = marcaRepository.save(marca);
+        return MarcaDTO.fromMarca(marcaSaved);
     }
 
     @Transactional
